@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Development — Snehaspad Foundation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Inline styles for skill-specific enhancements to ensure premium look */
+    :root {
+      --skill-accent: #f59e0b;
+      --skill-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      --skill-card-bg: rgba(255, 255, 255, 0.05);
+      --skill-border: rgba(255, 255, 255, 0.1);
+    }
+
+    .skill-page {
+      background-color: #020617;
+      color: #f8fafc;
+    }
+
+    .skill-hero {
+      position: relative;
+      height: 90vh;
+      background: linear-gradient(rgba(1, 1, 1, 0.6), rgba(1, 1, 1, 0.8)), url('skill-hero-bg.png');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .skill-hero::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: linear-gradient(transparent, #020617);
+      z-index: 2;
+    }
+
+    .skill-hero-content {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      max-width: 900px;
+      padding: 2rem;
+    }
+    
+    .skill-hero h1 {
+        font-size: clamp(3rem, 10vw, 6rem);
+        margin-bottom: 1rem;
+        text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .skill-hero .btn {
+        margin: 0 10px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-top: 4rem;
+    }
+
+    .skill-card {
+      background: var(--skill-card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--skill-border);
+      border-radius: 30px;
+      padding: 3rem 2rem;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .skill-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(232, 160, 32, 0.1), transparent);
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-15px) scale(1.02);
+      border-color: var(--gold);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .skill-card:hover::after {
+      opacity: 1;
+    }
+
+    .skill-img-container {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 2rem;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 15px;
+      border: 1px solid var(--skill-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: inherit;
+    }
+
+    .skill-card:hover .skill-img-container {
+      transform: rotate(10deg);
+      border-color: var(--gold);
+      background: rgba(232, 160, 32, 0.1);
+    }
+
+    .skill-img-container img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+    }
+
+    .skill-card h4 {
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .skill-card p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+
+    .impact-section {
+      background: #0f172a;
+      padding: 10rem 5%;
+      border-radius: 100px 100px 0 0;
+      margin-top: -100px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .impact-banner {
+        width: 100%;
+        max-width: 1100px;
+        margin: 4rem auto;
+        border-radius: 40px;
+        overflow: hidden;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    }
+
+    .impact-banner img {
+        width: 100%;
+        display: block;
+    }
+
+    .leader-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--skill-border);
+        border-radius: 40px;
+        padding: 4rem;
+        display: flex;
+        gap: 3rem;
+        align-items: center;
+        margin-bottom: 3rem;
+    }
+
+    .leader-info h3 {
+        font-size: 2.5rem;
+        color: var(--gold);
+        margin-bottom: 0.5rem;
+    }
+
+    .leader-title {
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.6);
+        margin-bottom: 2rem;
+        display: block;
+    }
+
+    @media (max-width: 991px) {
+        .leader-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 3rem;
+        }
+    }
+  </style>
+</head>
+
+<body class="skill-page">
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <img class="nav-logo" src="logo.jpeg" alt="Snehaspad">
+      <div class="nav-name">
+        <span class="nav-name-main">Snehaspad Foundation</span>
+        <span class="nav-name-sub">Serve · Empower · Transform</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="programs.html">Programs</a></li>
+      <li><a href="skill-enhancements.html" class="active">Skill Development</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="donate.html" class="nav-cta">Donate Now</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="skill-hero">
+    <div class="skill-hero-content reveal">
+      <div class="hero-tag">🇮🇳 SNEHASPAD KAUSHAL · Empowering India</div>
+      <h1>Building Futures Through <em>Skills</em></h1>
+      <p class="page-hero-sub">Creating sustainable livelihoods for rural communities through employment-oriented training.</p>
+      <div class="hero-btns stagger">
+        <a href="#programs" class="btn btn-gold">Explore Programs</a>
+        <a href="contact.html" class="btn btn-outline-light">Partner With Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="section" id="mission">
+    <div class="container">
+      <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+          <div class="reveal">
+              <span class="section-tag">WHO WE ARE</span>
+              <h2 class="section-title light">Transforming lives through <em>Snehaspad Kaushal</em></h2>
+              <p style="font-size: 1.15rem; color: rgba(255,255,255,0.8); line-height: 1.8; margin-bottom: 2rem;">
+                  Our rural-focused initiative is dedicated to narrowing the gap between potential and opportunity. We believe that skill development is the single most powerful tool for self-reliance.
+              </p>
+              <ul style="list-style: none; padding: 0;">
+                  <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 15px;">
+                      <span style="color: var(--gold); font-size: 1.5rem;">✦</span> Reducing rural unemployment
+                  </li>
+                  <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 15px;">
+                      <span style="color: var(--gold); font-size: 1.5rem;">✦</span> Driving women's financial independence
+                  </li>
+                  <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 15px;">
+                      <span style="color: var(--gold); font-size: 1.5rem;">✦</span> Encouraging local entrepreneurship
+                  </li>
+              </ul>
+          </div>
+          <div class="impact-banner reveal">
+              <img src="img-empowerment.png" alt="Empowerment">
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Programs Section -->
+  <section class="section" id="programs" style="background: #020617;">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag light">OUR CATALOGUE</span>
+        <h2 class="section-title light">Employment Oriented <em>Modules</em></h2>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-card reveal">
+          <div class="skill-img-container">
+            <img src="img-tailoring.png" alt="Tailoring">
+          </div>
+          <h4>Tailoring & Fashion</h4>
+          <p>Mastering the art of garment construction and modern fashion design to start home-based businesses.</p>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-img-container">
+            <img src="img-baking.png" alt="Baking">
+          </div>
+          <h4>Professional Baking</h4>
+          <p>Comprehensive training in cake decoration, baking techniques, and running a micro-bakery.</p>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-img-container">
+            <img src="img-beautician.png" alt="Beautician">
+          </div>
+          <h4>Beauty & Grooming</h4>
+          <p>Professional beautician services, salon management, and personal grooming certifications.</p>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-img-container">
+            <img src="img-computer.png" alt="Computer">
+          </div>
+          <h4>Digital Literacy</h4>
+          <p>Basic to advanced computer education, essential office tools, and internet skills for the digital age.</p>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-img-container">
+            <img src="img-mushroom.png" alt="Mushroom">
+          </div>
+          <h4>Mushroom Farming</h4>
+          <p>Scientific cultivation methods for high-yield mushroom production and market linkages.</p>
+        </div>
+
+        <div class="skill-card reveal">
+          <div class="skill-img-container">
+            <span style="font-size: 4rem;">🧼</span>
+          </div>
+          <h4>Product Manufacturing</h4>
+          <p>Creating daily-use household products like soap, detergent, and handwash for commercial sale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership Section -->
+  <section class="section" id="leadership">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">LEADERSHIP</span>
+        <h2 class="section-title light">The Visionaries <em>Behind</em></h2>
+      </div>
+
+      <div class="leader-card reveal">
+        <div class="leader-visual">
+            <div style="width: 250px; height: 320px; background: var(--skill-gradient); border-radius: 30px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 5rem;">👤</div>
+        </div>
+        <div class="leader-info">
+          <span class="leader-title">Project Director</span>
+          <h3>Darshan Das</h3>
+          <p style="color: rgba(255,255,255,0.7); font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+            Darshan Das leads the organization with a strong vision to empower rural communities. His leadership focuses on creating sustainable livelihood models and expanding training access.
+          </p>
+          <div style="display: flex; gap: 2rem; color: var(--gold); font-weight: 600;">
+              <span>📞 98546-44291</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="leader-card reveal">
+        <div class="leader-info" style="text-align: right;">
+          <span class="leader-title">Assistant Project Director</span>
+          <h3>Rashmi Medhi</h3>
+          <p style="color: rgba(255,255,255,0.7); font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+            Rashmi Medhi plays a key role in program coordination and implementation. She ensures smooth operations and quality delivery of training programs across all branches.
+          </p>
+          <div style="display: flex; gap: 2rem; color: var(--gold); font-weight: 600; justify-content: flex-end;">
+              <span>📞 78967-37364</span>
+          </div>
+        </div>
+        <div class="leader-visual">
+            <div style="width: 250px; height: 320px; background: var(--skill-gradient); border-radius: 30px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 5rem;">👩‍💼</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Get Involved Section -->
+  <section class="section">
+      <div class="container">
+          <div class="cta-strip-inner reveal">
+              <span class="section-tag light">JOIN THE MOVEMENT</span>
+              <h2>Ready to <em>Skill Up?</em></h2>
+              <p>Whether you're looking to enroll, partner, or sponsor a session, your involvement creates a ripple effect of change.</p>
+              <div class="cta-strip-btns">
+                  <a href="contact.html" class="btn btn-gold">Enroll Today</a>
+                  <a href="donate.html" class="btn btn-outline-light">Sponsor a Student</a>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Branch Network Section -->
+  <section class="section bg-light" id="branches">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>🌿 Our Branch Network & Leadership</h2>
+        <p>We are proud to operate across multiple districts of Assam, bringing skill development opportunities closer to communities.</p>
+      </div>
+      
+      <div class="branches-grid">
+        <div class="branch-card reveal">
+          <div class="branch-header">
+            <div class="branch-icon">📍</div>
+            <h3>Golaghat Branch</h3>
+          </div>
+          <div class="branch-content">
+            <h4>Project Co-ordinator:</h4>
+            <p class="coordinator-name">Swapnil Saikia</p>
+          </div>
+        </div>
+
+        <div class="branch-card reveal">
+          <div class="branch-header">
+            <div class="branch-icon">📍</div>
+            <h3>Bongaigaon Branch</h3>
+          </div>
+          <div class="branch-content">
+            <h4>Project Co-ordinator:</h4>
+            <p class="coordinator-name">Saurabh Medhi</p>
+            <div class="existing-centre">
+              <h5>Existing Skill Centre:</h5>
+              <p class="centre-name">Mushroom Farming Training Centre</p>
+              <p class="centre-location">📌 Abhayapuri, Bongaigaon</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-card reveal">
+          <div class="branch-header">
+            <div class="branch-icon">📍</div>
+            <h3>Jorhat Branch</h3>
+          </div>
+          <div class="branch-content">
+            <h4>Project Co-ordinator:</h4>
+            <p class="coordinator-name">Dixit Shubham Chetia</p>
+            <div class="existing-centre">
+              <h5>Existing Skill Centre:</h5>
+              <p class="centre-name">Tailoring Franchise</p>
+              <p class="centre-location">📌 Randhanijan Dhapkota, Jorhat</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-card reveal">
+          <div class="branch-header">
+            <div class="branch-icon">📍</div>
+            <h3>Dibrugarh Branch</h3>
+          </div>
+          <div class="branch-content">
+            <h4>Project Co-ordinator:</h4>
+            <p class="coordinator-name">Kalyani Gohain</p>
+          </div>
+        </div>
+
+        <div class="branch-card reveal">
+          <div class="branch-header">
+            <div class="branch-icon">📍</div>
+            <h3>Majuli Branch</h3>
+          </div>
+          <div class="branch-content">
+            <h4>Project Co-ordinator:</h4>
+            <p class="coordinator-name">Kalyani Gohain</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img class="footer-logo" src="logo.jpeg" alt="Snehaspad">
+          <span class="footer-brand-name">SNEHASPAD</span>
+        </div>
+        <p class="footer-desc">Serving with Compassion, Building Futures</p>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="skill-enhancements.html">Skill Development</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title">Contact</h4>
+        <div class="footer-contact-row">
+          <span>📧</span>
+          <span>snehaspadfoundation@gmail.com</span>
+        </div>
+        <div class="footer-contact-row">
+          <span>📍</span>
+          <span>Assam, India</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Snehaspad Foundation. All rights reserved.</p>
+      <span class="footer-motto">SERVE · EMPOWER · TRANSFORM</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
