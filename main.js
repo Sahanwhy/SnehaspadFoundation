@@ -472,13 +472,20 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryGrid.appendChild(galleryItem);
       });
 
-      // Add reveal animation to new items
+      // Use IntersectionObserver for staggered reveal — items start visible
+      // so they always show on mobile direct load; the animation is a bonus
       const newItems = galleryGrid.querySelectorAll('.gallery-item');
-      newItems.forEach((item, i) => {
-        setTimeout(() => {
-          item.classList.add('visible');
-        }, i * 50); // Faster stagger for better performance
-      });
+      if ('IntersectionObserver' in window) {
+        const galleryObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('gallery-animated');
+              galleryObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.05, rootMargin: '0px 0px 100px 0px' });
+        newItems.forEach(item => galleryObserver.observe(item));
+      }
 
     } catch (error) {
       console.error('Error loading gallery:', error);
@@ -494,23 +501,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function createGalleryItem(image, index) {
     const item = document.createElement('div');
-    item.className = 'gallery-item reveal';
-    item.style.animationDelay = `${index * 0.1}s`;
+    // Do NOT use 'reveal' class — that starts items at opacity:0 and relies
+    // on IntersectionObserver which may not fire on mobile direct load.
+    // Items are visible by default; 'gallery-animated' adds a bonus transform.
+    item.className = 'gallery-item';
+
+    // Use eager loading for first 12 images so they show immediately on mobile;
+    // lazy loading for the rest to save bandwidth.
+    const loadingAttr = index < 12 ? 'eager' : 'lazy';
 
     item.innerHTML = `
-      <img src="${image.path}" alt="Gallery Photo ${index + 1}" loading="lazy">
+      <img src="${image.path}" alt="Gallery Photo ${index + 1}" loading="${loadingAttr}" decoding="async">
       <div class="gallery-overlay">
         <span class="gallery-plus">+</span>
         <div class="gallery-info">
           <div class="gallery-filename">${image.filename}</div>
-          <div class="gallery-meta">${image.date_formatted} • ${image.size_formatted}</div>
         </div>
       </div>
     `;
 
     // Add click event for lightbox
     item.addEventListener('click', () => {
-      openLightbox(image.path, image.filename, image.date_formatted);
+      openLightbox(image.path, image.filename, undefined);
     });
 
     return item;

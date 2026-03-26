@@ -2243,6 +2243,10 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
+  /* Always visible — do NOT hide this container with reveal animation */
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
 }
 
 .gallery-item {
@@ -2251,9 +2255,12 @@ h3 {
   overflow: hidden;
   background: white;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   aspect-ratio: 4/3;
+  /* Always visible — never hidden regardless of animate classes */
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .gallery-item:hover {
@@ -2534,16 +2541,28 @@ h3 {
   opacity: 0.8;
 }
 
-/* Gallery Reveal Animation */
-.gallery-item.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease;
+/* Gallery Reveal Animation
+   Items are ALWAYS visible by default (opacity:1, no transform).
+   .gallery-animated adds a subtle entrance effect via IntersectionObserver.
+   This prevents the blank-gallery bug on mobile direct load. */
+.gallery-item {
+  opacity: 1;
+  transform: none;
 }
 
-.gallery-item.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
+.gallery-item.gallery-animated {
+  animation: galleryPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes galleryPop {
+  from {
+    opacity: 0.4;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* FUTURE PLANS SECTION */
