@@ -387,87 +387,108 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', escHandler);
   }
 
-  /* ── Static Gallery Loading (Works without PHP) ── */
+  /* ── Dynamic Gallery Loading (from server directory) ── */
   async function loadGallery() {
     const galleryGrid = document.getElementById('galleryGrid');
     if (!galleryGrid) return;
 
-    // List of known images in gallery-images folder
-    const galleryImages = [
-      '20220807_000937.jpg.jpeg',
-      '69b998a1eb7bb_1773770913.jpg',
-      '69b998c9ecd1c_1773770953.jpg',
-      '69b998c9ecee9_1773770953.jpg',
-      '69b998c9ed30d_1773770953.jpg',
-      '69b999014b53e_1773771009.jpg',
-      'FB_IMG_1768313804639.jpg (1).jpeg',
-      'FB_IMG_1768313804639.jpg.jpeg',
-      'FB_IMG_1768313806550.jpg.jpeg',
-      'IMG-20220605-WA0132.jpg (1).jpeg',
-      'IMG-20220605-WA0132.jpg.jpeg',
-      'IMG-20220706-WA0034.jpg.jpeg',
-      'IMG-20220706-WA0055.jpg.jpeg',
-      'IMG-20220706-WA0061.jpg.jpeg',
-      'IMG-20220811-WA0004.jpg.jpeg',
-      'IMG-20220811-WA0005.jpg (1).jpeg',
-      'IMG-20220811-WA0005.jpg.jpeg',
-      'IMG-20220813-WA0024.jpg.jpeg',
-      'IMG-20220817-WA0033.jpg (1).jpeg',
-      'IMG-20220817-WA0033.jpg.jpeg',
-      'IMG-20220817-WA0040.jpg.jpeg',
-      'IMG-20220817-WA0042.jpg.jpeg',
-      'IMG-20250727-WA00151.jpg.jpeg',
-      'IMG-20250727-WA0028.jpg.jpeg',
-      'IMG-20250828-WA0024.jpg.jpeg',
-      'IMG-20250830-WA0007.jpg.jpeg',
-      'IMG-20251004-WA0022.jpg (1).jpeg',
-      'IMG-20251004-WA0022.jpg.jpeg',
-      'IMG-20251114-WA0009.jpg.jpeg',
-      'IMG-20260112-WA0002.jpg.jpeg',
-      'IMG-20260309-WA0036.jpg.jpeg',
-      'IMG-20260309-WA0039.jpg.jpeg',
-      'Screenshot 2026-03-26 095002.png',
-      'Screenshot 2026-03-26 095018.png',
-      'Screenshot 2026-03-26 095032.png',
-      'Screenshot 2026-03-26 095047.png',
-      'Screenshot 2026-03-26 095111.png',
-      'Screenshot 2026-03-26 095126.png',
-      'Screenshot 2026-03-26 095137.png',
-      'Screenshot 2026-03-26 095148.png',
-      'Screenshot 2026-03-26 095159.png',
-      'Screenshot 2026-03-26 095228.png',
-      'Screenshot 2026-03-26 095240.png',
-      'Screenshot 2026-03-26 095251.png',
-      'Screenshot 2026-03-26 095303.png',
-      'Screenshot 2026-03-26 095312.png',
-      'Screenshot 2026-03-26 095327.png',
-      'Screenshot 2026-03-26 095336.png',
-      'Screenshot 2026-03-26 095418.png',
-      'Screenshot 2026-03-26 095433.png',
-      'Screenshot 2026-03-26 095448.png',
-      'Screenshot 2026-03-26 095502.png',
-      'Screenshot 2026-03-26 095514.png',
-      'Screenshot 2026-03-26 095526.png',
-      'Screenshot 2026-03-26 095547.png',
-      'Screenshot 2026-03-26 095558.png',
-      'Screenshot 2026-03-26 095630.png',
-      'Screenshot_2022-02-10-11-04-01-88_6012fa4d4ddec268fc5c7112cbb265e7.jpg.jpeg',
-      'Screenshot_2022-07-18-19-34-30-35_40deb401b9ffe8e1df2f1cc5ba480b12.jpg (1).jpeg',
-      'Screenshot_2026-01-14-22-38-13-36_e2d5b3f32b79de1d45acd1fad96fbb0f.jpg.jpeg',
-      'Screenshot_2026-01-14-22-38-18-79_e2d5b3f32b79de1d45acd1fad96fbb0f.jpg.jpeg'
-    ];
+    let galleryImages = [];
+
+    try {
+      const response = await fetch('admin/gallery-api.php');
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.success && Array.isArray(data.images)) {
+          galleryImages = data.images.map(img => ({
+            filename: img.filename,
+            path: img.path,
+            name: img.filename
+          }));
+        }
+      }
+    } catch (err) {
+      console.warn('Gallery API fetch failed, falling back to built-in list:', err);
+
+      // Fallback static list (legacy support):
+      galleryImages = [
+        '20220807_000937.jpg.jpeg',
+        '69b998a1eb7bb_1773770913.jpg',
+        '69b998c9ecd1c_1773770953.jpg',
+        '69b998c9ecee9_1773770953.jpg',
+        '69b998c9ed30d_1773770953.jpg',
+        '69b999014b53e_1773771009.jpg',
+        'FB_IMG_1768313804639.jpg (1).jpeg',
+        'FB_IMG_1768313804639.jpg.jpeg',
+        'FB_IMG_1768313806550.jpg.jpeg',
+        'IMG-20220605-WA0132.jpg (1).jpeg',
+        'IMG-20220605-WA0132.jpg.jpeg',
+        'IMG-20220706-WA0034.jpg.jpeg',
+        'IMG-20220706-WA0055.jpg.jpeg',
+        'IMG-20220706-WA0061.jpg.jpeg',
+        'IMG-20220811-WA0004.jpg.jpeg',
+        'IMG-20220811-WA0005.jpg (1).jpeg',
+        'IMG-20220811-WA0005.jpg.jpeg',
+        'IMG-20220813-WA0024.jpg.jpeg',
+        'IMG-20220817-WA0033.jpg (1).jpeg',
+        'IMG-20220817-WA0033.jpg.jpeg',
+        'IMG-20220817-WA0040.jpg.jpeg',
+        'IMG-20220817-WA0042.jpg.jpeg',
+        'IMG-20250727-WA00151.jpg.jpeg',
+        'IMG-20250727-WA0028.jpg.jpeg',
+        'IMG-20250828-WA0024.jpg.jpeg',
+        'IMG-20250830-WA0007.jpg.jpeg',
+        'IMG-20251004-WA0022.jpg (1).jpeg',
+        'IMG-20251004-WA0022.jpg.jpeg',
+        'IMG-20251114-WA0009.jpg.jpeg',
+        'IMG-20260112-WA0002.jpg.jpeg',
+        'IMG-20260309-WA0036.jpg.jpeg',
+        'IMG-20260309-WA0039.jpg.jpeg',
+        'Screenshot 2026-03-26 095002.png',
+        'Screenshot 2026-03-26 095018.png',
+        'Screenshot 2026-03-26 095032.png',
+        'Screenshot 2026-03-26 095047.png',
+        'Screenshot 2026-03-26 095111.png',
+        'Screenshot 2026-03-26 095126.png',
+        'Screenshot 2026-03-26 095137.png',
+        'Screenshot 2026-03-26 095148.png',
+        'Screenshot 2026-03-26 095159.png',
+        'Screenshot 2026-03-26 095228.png',
+        'Screenshot 2026-03-26 095240.png',
+        'Screenshot 2026-03-26 095251.png',
+        'Screenshot 2026-03-26 095303.png',
+        'Screenshot 2026-03-26 095312.png',
+        'Screenshot 2026-03-26 095327.png',
+        'Screenshot 2026-03-26 095336.png',
+        'Screenshot 2026-03-26 095418.png',
+        'Screenshot 2026-03-26 095433.png',
+        'Screenshot 2026-03-26 095448.png',
+        'Screenshot 2026-03-26 095502.png',
+        'Screenshot 2026-03-26 095514.png',
+        'Screenshot 2026-03-26 095526.png',
+        'Screenshot 2026-03-26 095547.png',
+        'Screenshot 2026-03-26 095558.png',
+        'Screenshot 2026-03-26 095630.png',
+        'Screenshot_2022-02-10-11-04-01-88_6012fa4d4ddec268fc5c7112cbb265e7.jpg.jpeg',
+        'Screenshot_2022-07-18-19-34-30-35_40deb401b9ffe8e1df2f1cc5ba480b12.jpg (1).jpeg',
+        'Screenshot_2026-01-14-22-38-13-36_e2d5b3f32b79de1d45acd1fad96fbb0f.jpg.jpeg',
+        'Screenshot_2026-01-14-22-38-18-79_e2d5b3f32b79de1d45acd1fad96fbb0f.jpg.jpeg'
+      ].map(name => ({ filename: name, path: `gallery-images/${name}`, name }));
+    }
 
     try {
       // Clear loading spinner
       galleryGrid.innerHTML = '';
 
       // Create gallery items for each image
-      galleryImages.forEach((imageName, index) => {
+      galleryImages.forEach((imageItem, index) => {
+        const filename = typeof imageItem === 'string' ? imageItem : (imageItem.filename || imageItem.name);
+        const path = typeof imageItem === 'string' ? `gallery-images/${imageItem}` : (imageItem.path || `gallery-images/${filename}`);
         const imageData = {
-          filename: imageName,
-          path: `gallery-images/${imageName}`,
-          name: imageName
+          filename,
+          path,
+          name: filename
         };
+
         const galleryItem = createGalleryItem(imageData, index);
         galleryGrid.appendChild(galleryItem);
       });
