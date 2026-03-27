@@ -25,7 +25,7 @@ if (is_dir($galleryDir)) {
                     
                     $images[] = [
                         'filename' => $file,
-                        'path' => 'gallery-images/' . $file,
+                        'path' => 'gallery-images/' . rawurlencode($file),
                         'size' => $fileSize,
                         'modified' => $fileModTime,
                         'size_formatted' => formatBytes($fileSize),

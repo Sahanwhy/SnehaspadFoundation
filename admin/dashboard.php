@@ -502,7 +502,7 @@ if (file_exists($gallery_dir)) {
                     <div class="gallery-grid">
                         <?php foreach ($gallery_images as $image): ?>
                             <div class="gallery-item">
-                                <img src="<?php echo '../gallery-images/' . htmlspecialchars($image['name']); ?>" alt="Gallery Photo">
+                                <img src="<?php echo '../gallery-images/' . rawurlencode($image['name']); ?>" alt="Gallery Photo">
                                 <div class="gallery-item-info">
                                     <span>
                                         <?php 
