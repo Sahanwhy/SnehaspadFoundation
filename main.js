@@ -395,7 +395,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let galleryImages = [];
 
     try {
-      const response = await fetch('admin/gallery-api.php');
+      // Try static manifest first (works on Vercel)
+      let response = await fetch('gallery-images/gallery-manifest.json');
+      if (!response.ok) {
+        // Fallback to PHP API if manifest not found
+        response = await fetch('admin/gallery-api.php');
+      }
       if (response.ok) {
         const data = await response.json();
         if (data && data.success && Array.isArray(data.images)) {
@@ -472,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Screenshot_2022-07-18-19-34-30-35_40deb401b9ffe8e1df2f1cc5ba480b12.jpg (1).jpeg',
         'Screenshot_2026-01-14-22-38-13-36_e2d5b3f32b79de1d45acd1fad96fbb0f.jpg.jpeg',
         'Screenshot_2026-01-14-22-38-18-79_e2d5b3f32b79de1d45acd1fad96fbb0f.jpg.jpeg'
-      ].map(name => ({ filename: name, path: `gallery-images/${name}`, name }));
+      ].map(name => ({ filename: name, path: `gallery-images/${encodeURIComponent(name)}`, name }));
     }
 
     try {
@@ -540,6 +545,13 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
     `;
+
+    // Get the img element and add error handling
+    const img = item.querySelector('img');
+    img.addEventListener('error', () => {
+      // Hide the entire gallery item if image fails to load
+      item.style.display = 'none';
+    });
 
     // Add click event for lightbox
     item.addEventListener('click', () => {
